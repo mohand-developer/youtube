@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>مشغل يوتيوب بدون إعلانات</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #111; color: #fff; padding: 20px; text-align: center; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    h1 { margin-bottom: 20px; color: #ff0000; }
+    input[type="text"] { width: 100%; padding: 15px; font-size: 16px; border: 2px solid #333; border-radius: 10px; background: #222; color: #fff; margin-bottom: 20px; direction: ltr; text-align: center; }
+    button { padding: 12px 30px; font-size: 16px; background: #ff0000; color: white; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #cc0000; }
+    .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin-top: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); display: none; }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .info { margin-top: 20px; font-size: 14px; color: #aaa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>مشغل يوتيوب بدون إعلانات</h1>
+    <p>حطي لينك الفيديو واضغطي تشغيل</p>
+    
+    <input type="text" id="youtubeUrl" placeholder="مثال: https://youtu.be/أي_حاجة" />
+    <button onclick="playVideo()">تشغيل الفيديو</button>
+
+    <div id="videoPlayer" class="video-container"></div>
+
+    <div class="info">
+      <p>يدعم أي لينك يوتيوب (حتى لو فيه ?si= أو &t=)</p>
+      <p>الإعلانات الخارجية مش هتظهر</p>
+    </div>
+  </div>
+
+  <script>
+    function playVideo() {
+      const urlInput = document.getElementById('youtubeUrl').value.trim();
+      const videoPlayer = document.getElementById('videoPlayer');
+
+      if (!urlInput) {
+        alert('من فضلك حطي لينك يوتيوب!');
+        return;
+      }
+
+      // استخراج الـ ID مهما كان شكل اللينك
+      const videoId = extractVideoId(urlInput);
+      if (!videoId) {
+        alert('اللينك مش صحيح! جربي لينك يوتيوب عادي');
+        return;
+      }
+
+      // رابط الـ embed النظيف
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&fs=1&color=white`;
+
+      videoPlayer.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      videoPlayer.style.display = 'block';
+    }
+
+    // دالة قوية لاستخراج الـ ID من أي لينك
+    function extractVideoId(url) {
+      try {
+        const urlObj = new URL(url);
+        let id = '';
+
+        // دعم youtu.be
+        if (urlObj.hostname === 'youtu.be') {
+          id = urlObj.pathname.slice(1).split('?')[0];
+        }
+        // دعم www.youtube.com
+        else if (urlObj.hostname.includes('youtube.com')) {
+          if (urlObj.pathname === '/watch') {
+            id = urlObj.searchParams.get('v');
+          } else if (urlObj.pathname.includes('/embed/')) {
+            id = urlObj.pathname.split('/embed/')[1].split('?')[0];
+          } else if (urlObj.pathname.includes('/shorts/')) {
+            id = urlObj.pathname.split('/shorts/')[1].split('?')[0];
+          }
+        }
+
+        // التأكد إن الـ ID 11 حرف
+        return (id && id.length === 11) ? id : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // تشغيل بالضغط على Enter
+    document.getElementById('youtubeUrl').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') playVideo();
+    });
+  </script>
+</body>
+</html>
