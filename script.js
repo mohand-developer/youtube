@@ -3982,3 +3982,7 @@ if (window.location.pathname.includes('admin.html')) {
 
 // ربط زر تأكيد الطلب
 document.getElementById('submit-order-now')?.addEventListener('click', submitOrderNow);
+
+function pushOrderToRealtime(order){
+    return firebase.database().ref("orders").push(order);
+}
