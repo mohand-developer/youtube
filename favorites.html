@@ -48,9 +48,6 @@
         .empty-favorites i { font-size: 4em; margin-bottom: 20px; opacity: 0.3; }
         @keyframes cardFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="firebase-init.js"></script>
 </head>
 <body>
 
@@ -72,8 +69,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="firebase-init.js"></script>
-    <script src="script.js" defer></script>
+<script src="script.js" defer></script>
     <script>
         // Global renderFavorites function (defined in script.js)
         // This will be called by the Firebase listener in script.js
